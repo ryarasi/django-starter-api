@@ -1,0 +1,40 @@
+version: "2.4"
+
+services:
+  nginx:
+    build: ./nginx
+    ports:
+      - 8000:80
+    expose:
+      - 8000
+    volumes:
+      - static-data:/vol/static
+    depends_on:
+      - web
+    restart: "on-failure"
+
+  redis:
+    image: redis:latest
+    ports:
+      - 6379:6379
+    volumes:
+      - ./config/redis.conf:/redis.conf
+    command: ["redis-server", "/redis.conf"]
+    restart: "on-failure"
+
+  web:
+    build: .
+    command: bash -c "python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:8001"
+    container_name: starter_api
+    volumes:
+      - .:/starter
+    ports:
+      - 8001:8001
+    expose:
+      - 8001
+    depends_on:
+      - redis
+    restart: "on-failure"
+
+volumes:
+  static-data:

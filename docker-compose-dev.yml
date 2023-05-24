@@ -1,0 +1,56 @@
+version: "3.9"
+
+services:
+  nginx:
+    build: ./nginx
+    ports:
+      - 80:8000
+    volumes:
+      - static-data:/vol/static
+    depends_on:
+      - web
+    restart: "on-failure"
+  redis:
+    image: redis:latest
+    ports:
+      - 6379:6379
+    volumes:
+      - ./config/redis.conf:/redis.conf
+    command: ["redis-server", "/redis.conf"]
+    restart: "on-failure"
+  db:
+    image: postgres
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+    env_file:
+      - database.env
+    restart: "on-failure"
+  pg_admin:
+    image: dpage/pgadmin4:latest
+    container_name: pgadmin4
+    ports:
+      - "5000:80"
+    environment:
+      - GUNICORN_THREADS=1
+      - PGADMIN_DEFAULT_EMAIL=admin@email.com
+      - PGADMIN_DEFAULT_PASSWORD=admin
+    depends_on:
+      - db
+    restart: "on-failure"
+
+  web:
+    build: .
+    command: bash -c "python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+    container_name: shuddhi
+    volumes:
+      - .:/shuddhi
+    ports:
+      - 8000:8000
+    depends_on:
+      - db
+      - redis
+    restart: "on-failure"
+
+volumes:
+  database-data: # named volumes can be managed easier using docker-compose
+  static-data:

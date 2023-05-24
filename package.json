@@ -1,0 +1,28 @@
+{
+  "name": "starter-api",
+  "version": "1.0.0",
+  "description": "The API for Starter",
+  "main": "index.js",
+  "scripts": {
+    "devstart": "docker compose up -f docker-compose-dev.yml",
+    "start": "docker compose up",
+    "stop": "docker compose down --remove-orphans && docker-compose stop",
+    "build": "docker compose build",
+    "makemigrations": "docker compose run web python manage.py makemigrations",
+    "migrate": "docker compose run web python manage.py migrate",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "stage": "git checkout staging && git merge dev && git push && git checkout dev",
+    "golive": "git checkout master && git merge dev && git push && git checkout dev",
+    "sync-all": "npm run stage && npm run golive"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ryarasi/django-starter-api.git"
+  },
+  "author": "Ragav Yarasi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ryarasi/django-starter-api/issues"
+  },
+  "homepage": "https://github.com/ryarasi/django-starter-api#readme"
+}

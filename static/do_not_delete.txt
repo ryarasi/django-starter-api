@@ -1,0 +1,1 @@
+This file helps ensure that git doesn't ignore this folder. It's necessary for the deployment to work properly.

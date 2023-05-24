@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Starter API</title>
+    {% load static %}
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="{% static 'assets/favicon.ico' %}"
+    />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/home.css' %}" />
+  </head>
+  <body>
+    <div id="home-container">
+      <h2>Starter API</h2>
+      <ol>
+        <li><a href="/graphql">GraphQL Console</a></li>
+        <li><a href="/admin">Admin Console</a></li>
+      </ol>
+    </div>
+  </body>
+</html>
